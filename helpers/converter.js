@@ -17,6 +17,7 @@ const binToDec = (input) => {
 };
 
 const binToHex = (input) => {
+    console.log("BTH", input);
     let reversedStringToArr = input.split("");
 
     let key = {
@@ -67,16 +68,7 @@ const binToHex = (input) => {
 };
 
 const decToBin = (input) => {
-    let bin = 0;
-    let rem;
-    let i = 1;
-    while (input != 0) {
-        rem = input % 2;
-        input = parseInt(input / 2);
-        bin = bin + rem * i;
-        i = i * 10;
-    }
-    return bin + "";
+    return input.toString(2);
 };
 
 const decToHex = (input) => {
