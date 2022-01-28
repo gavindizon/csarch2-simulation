@@ -9,6 +9,8 @@ import { toUTF16 } from "../helpers/toUTF16";
 import { hexToDec } from "../helpers/converter";
 import { toUTF8 } from "../helpers/toUTF8";
 
+
+
 export default function Home() {
     let [validity, setValidity] = useState(true);
     let [input, setInput] = useState("");
@@ -17,7 +19,28 @@ export default function Home() {
     let [utf32, setUtf32] = useState("");
     let [invalidText, setInvalidText] = useState("");
 
-    function checkInputValidity() {}
+    const checkResult= (result) => {
+        return  (result ?  result : "0000 0000");
+    }
+
+    const downloadTxtFile = () => {
+        const element = document.createElement("a");
+        const utf8 = document.getElementById("utf8").value;
+        const utf16 = document.getElementById("utf16").value;
+        const utf32 = document.getElementById("utf32").value;
+
+        const file = new Blob([checkResult (utf8) + "\n" + 
+                               checkResult (utf16) + "\n" + 
+                               checkResult (utf32)], {
+          type: "text/plain;charset=utf-8"
+        });
+        element.href = URL.createObjectURL(file);
+        element.download = "utfresult.txt";
+        document.body.appendChild(element);
+        element.click();
+      };
+
+    function checkInputValidity() { }
 
     useEffect(() => {
         console.log("INPUT", input);
@@ -36,6 +59,8 @@ export default function Home() {
     }, [input]);
 
     return (
+
+
         <Layout>
             {/* HEADER */}
             <div className="py-24 md:py-0">
@@ -68,8 +93,8 @@ export default function Home() {
                                     isTextValid && isNotBeyondMax
                                         ? ""
                                         : isTextValid
-                                        ? "Error: Beyond Max of Unicode"
-                                        : "Error: Invalid Input";
+                                            ? "Error: Beyond Max of Unicode"
+                                            : "Error: Invalid Input";
 
                                 setInvalidText(showInvalidText);
 
@@ -88,6 +113,7 @@ export default function Home() {
                     <div className="w-full sm:w-72">
                         <h2 className="font-bold pb-2">UTF-8:</h2>
                         <input
+                            id="utf8"
                             type="text"
                             className={`form-input rounded w-full sm:w-72`}
                             placeholder="0000 0000"
@@ -98,8 +124,9 @@ export default function Home() {
                     <div className="w-full sm:w-72">
                         <h2 className="font-bold pb-2">UTF-16:</h2>
                         <input
+                            id="utf16"
                             type="text"
-                            className="form-input rounded w-full sm:w-72"
+                            className="form-input rounded w-full sm:w-72 utf16"
                             placeholder="0000 0000"
                             value={utf16}
                             disabled
@@ -108,8 +135,9 @@ export default function Home() {
                     <div className="w-full md:w-72">
                         <h2 className="font-bold pb-2">UTF-32:</h2>
                         <input
+                            id="utf32"
                             type="text"
-                            className="form-input rounded w-full sm:w-72"
+                            className="form-input rounded w-full sm:w-72 utf32"
                             placeholder="0000 0000"
                             value={utf32}
                             disabled
@@ -122,7 +150,7 @@ export default function Home() {
                         <FaClipboard size={21} className="inline mr-2 leading-2 mb-1.5 " />
                         COPY TO CLIPBOARD
                     </button>
-                    <button className="border-solid border-2 rounded-md px-6 py-2 bg-blue-500 text-white border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:bg-blue-400  hover:border-blue-400 mb-4">
+                    <button onClick={downloadTxtFile} className="border-solid border-2 rounded-md px-6 py-2 bg-blue-500 text-white border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:bg-blue-400  hover:border-blue-400 mb-4">
                         <FaRegSave size={21} className="inline mr-2 leading-2 mb-1.5" />
                         SAVE .TXT FILE
                     </button>
