@@ -8,7 +8,7 @@ import { toUTF32 } from "../helpers/toUTF32";
 import { toUTF16 } from "../helpers/toUTF16";
 import { hexToDec } from "../helpers/converter";
 import { toUTF8 } from "../helpers/toUTF8";
-
+import { disableButtons, enableButtons } from "../helpers/disableSave";
 
 
 export default function Home() {
@@ -49,11 +49,13 @@ export default function Home() {
             setUtf8("");
             setUtf16("");
             setUtf32("");
+            disableButtons();
         } else {
             if (input !== "") {
                 setUtf8(toUTF8(input));
                 setUtf16(toUTF16(input));
                 setUtf32(toUTF32(input));
+                enableButtons();
             }
         }
     }, [input]);
@@ -146,11 +148,11 @@ export default function Home() {
                 </div>
 
                 <div className="text-center py-8 px-2 md:space-x-4">
-                    <button className="border-solid border-2 rounded-md px-6 py-2 text-blue-500 border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:text-blue-700  hover:border-blue-700 mb-4">
+                    <button id="copy" className="border-solid border-2 rounded-md px-6 py-2 text-blue-500 border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:text-blue-700  hover:border-blue-700 mb-4">
                         <FaClipboard size={21} className="inline mr-2 leading-2 mb-1.5 " />
                         COPY TO CLIPBOARD
                     </button>
-                    <button onClick={downloadTxtFile} className="border-solid border-2 rounded-md px-6 py-2 bg-blue-500 text-white border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:bg-blue-400  hover:border-blue-400 mb-4">
+                    <button id="save" onClick={downloadTxtFile} className="border-solid border-2 rounded-md px-6 py-2 bg-blue-500 text-white border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:bg-blue-400  hover:border-blue-400 mb-4">
                         <FaRegSave size={21} className="inline mr-2 leading-2 mb-1.5" />
                         SAVE .TXT FILE
                     </button>
