@@ -29,9 +29,9 @@ export default function Home() {
         const utf16 = document.getElementById("utf16").value;
         const utf32 = document.getElementById("utf32").value;
 
-        const file = new Blob([checkResult (utf8) + "\n" + 
-                               checkResult (utf16) + "\n" + 
-                               checkResult (utf32)], {
+        const file = new Blob(["UTF-8: "+checkResult (utf8) + "\n" + 
+                               "UTF-16: "+checkResult (utf16) + "\n" + 
+                               "UTF-32: "+checkResult (utf32)], {
           type: "text/plain;charset=utf-8"
         });
         element.href = URL.createObjectURL(file);
