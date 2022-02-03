@@ -23,6 +23,23 @@ export default function Home() {
         return  (result ?  result : "0000 0000");
     }
 
+    const copyToClipboard = () => {
+        var dummy = document.createElement("textarea");
+        const utf8 = document.getElementById("utf8").value;
+        const utf16 = document.getElementById("utf16").value;
+        const utf32 = document.getElementById("utf32").value;
+
+        const answer =  "UTF-8: " + checkResult(utf8) +
+                        "\r\nUTF-16: " + checkResult(utf16) +
+                        "\r\nUTF-32: " + checkResult(utf32);
+        
+        document.body.appendChild(dummy);
+        dummy.value = answer;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+    }
+
     const downloadTxtFile = () => {
         const element = document.createElement("a");
         const utf8 = document.getElementById("utf8").value;
@@ -148,7 +165,7 @@ export default function Home() {
                 </div>
 
                 <div className="text-center py-8 px-2 md:space-x-4">
-                    <button id="copy" className="border-solid border-2 rounded-md px-6 py-2 text-blue-500 border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:text-blue-700  hover:border-blue-700 mb-4">
+                    <button id="copy" onClick={copyToClipboard} className="border-solid border-2 rounded-md px-6 py-2 text-blue-500 border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:text-blue-700  hover:border-blue-700 mb-4">
                         <FaClipboard size={21} className="inline mr-2 leading-2 mb-1.5 " />
                         COPY TO CLIPBOARD
                     </button>
