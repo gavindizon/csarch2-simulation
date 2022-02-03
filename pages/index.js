@@ -12,32 +12,34 @@ import { disableButtons, enableButtons } from "../helpers/disableSave";
 
 
 export default function Home() {
-    let [validity, setValidity] = useState(true);
+    let [validity, setValidity] = useState(false);
     let [input, setInput] = useState("");
     let [utf8, setUtf8] = useState("");
     let [utf16, setUtf16] = useState("");
     let [utf32, setUtf32] = useState("");
     let [invalidText, setInvalidText] = useState("");
-
+    let [prompt, setPrompt] = useState(false);
+    
     const checkResult= (result) => {
         return  (result ?  result : "0000 0000");
     }
 
     const copyToClipboard = () => {
-        var dummy = document.createElement("textarea");
+        var element = document.createElement("textarea");
         const utf8 = document.getElementById("utf8").value;
         const utf16 = document.getElementById("utf16").value;
         const utf32 = document.getElementById("utf32").value;
 
         const answer =  "UTF-8: " + checkResult(utf8) +
-                        "\r\nUTF-16: " + checkResult(utf16) +
-                        "\r\nUTF-32: " + checkResult(utf32);
+                        "\nUTF-16: " + checkResult(utf16) +
+                        "\nUTF-32: " + checkResult(utf32);
         
-        document.body.appendChild(dummy);
-        dummy.value = answer;
-        dummy.select();
+        document.body.appendChild(element);
+        element.value = answer;
+        element.select();
         document.execCommand("copy");
-        document.body.removeChild(dummy);
+        setPrompt(true);
+        document.body.removeChild(element);
     }
 
     const downloadTxtFile = () => {
@@ -97,12 +99,14 @@ export default function Home() {
                     <div className="flex w-full justify-center items-center">
                         <div className={styles.prefix}>U+</div>
                         <input
+                            id="input"
                             type="text"
                             maxLength={6}
                             className={`${styles.input} relative form-input rounded w-full sm:w-72 text-uppercase`}
                             placeholder="0000"
                             value={input}
                             onChange={(e) => {
+                                setPrompt(false);
                                 let isTextValid = /^[0-9A-Fa-f]+$/.test(e.target.value);
                                 let isNotBeyondMax = hexToDec(e.target.value) <= 1114111; // 10ffff
 
@@ -165,15 +169,19 @@ export default function Home() {
                 </div>
 
                 <div className="text-center py-8 px-2 md:space-x-4">
-                    <button id="copy" onClick={copyToClipboard} className="border-solid border-2 rounded-md px-6 py-2 text-blue-500 border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:text-blue-700  hover:border-blue-700 mb-4">
+                    <button disabled={!validity} id="copy" onClick={copyToClipboard} className="border-solid border-2 rounded-md px-6 py-2 text-blue-500 border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:text-blue-700  hover:border-blue-700 mb-4">
                         <FaClipboard size={21} className="inline mr-2 leading-2 mb-1.5 " />
                         COPY TO CLIPBOARD
                     </button>
-                    <button id="save" onClick={downloadTxtFile} className="border-solid border-2 rounded-md px-6 py-2 bg-blue-500 text-white border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:bg-blue-400  hover:border-blue-400 mb-4">
+                    <button disabled={!validity} id="save" onClick={downloadTxtFile} className="border-solid border-2 rounded-md px-6 py-2 bg-blue-500 text-white border-blue-500 inline-block whitespace-nowrap w-full md:w-auto transition-colors hover:bg-blue-400  hover:border-blue-400 mb-4">
                         <FaRegSave size={21} className="inline mr-2 leading-2 mb-1.5" />
                         SAVE .TXT FILE
                     </button>
                 </div>
+
+                <p className={`text-center ${prompt ? "": "invisible"}`}>
+                    Copied to clipboard
+                </p>
             </div>
         </Layout>
     );

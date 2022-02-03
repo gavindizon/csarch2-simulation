@@ -18,3 +18,13 @@ a {
 * {
     box-sizing: border-box;
 }
+
+#copy:disabled, #copy[disabled] {
+    background-color: transparent !important;
+    opacity: 0.4;
+}
+
+#save:disabled, #save[disabled] {
+    background-color: #0070f3 !important;
+    opacity: 0.4;
+}
