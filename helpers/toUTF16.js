@@ -15,7 +15,7 @@ export const toUTF16 = (input) => {
 
         console.log("VAL", val);
         //
-        let bin = String(hexToBin(val)).padStart(10, "0");
+        let bin = String(hexToBin(val)).padStart(20, "0");
 
         console.log("TEST", bin);
 
