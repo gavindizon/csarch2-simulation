@@ -21,7 +21,7 @@ const Layout = ({ children, active, title }) => {
             </nav>
             <main className="min-h-screen flex justify-center items-center">{children}</main>
             <footer className="text-center text-white text-sm bg-gray-900 py-16">
-                <p>DIZON • ESQUIVEL • GREGORIO • MANUEL • PALMARES • TANG • UY</p>
+                <p>DIZON • ESQUIVEL • GREGORIO • MANUEL • PALMARES • UY</p>
                 <p className="pt-4 pb-16">©{year}. CSARCH2 S14 Group 6. All rights reserved.</p>
             </footer>
         </>
